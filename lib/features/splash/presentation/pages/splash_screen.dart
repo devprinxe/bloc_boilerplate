@@ -13,6 +13,10 @@ class SplashScreen extends StatelessWidget {
       listener: (context, state) {
         if (state is NavigateToOnboarding) {
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Navigate to onboarding')));
+        } else if (state is NavigateToWelcome) {
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Navigate to welcome')));
+        } else if (state is NavigateToHome) {
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Navigate to home')));
         }
       },
       child: Scaffold(body: Center(child: FlutterLogo(size: 100))),

@@ -12,7 +12,7 @@ class Bootstrap {
 
     Bloc.observer = AppBlocObserver();
 
-    configureDependencies();
+    await configureDependencies();
 
     FlutterError.onError = (details) {
       debugPrint(details.exceptionAsString());

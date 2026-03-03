@@ -9,7 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 final getIt = GetIt.instance;
 
 @InjectableInit()
-void configureDependencies() => getIt.init(environment: EnvConfig.environment);
+Future<void> configureDependencies() => getIt.init(environment: EnvConfig.environment);
 
 @module
 abstract class RegisterModule {
