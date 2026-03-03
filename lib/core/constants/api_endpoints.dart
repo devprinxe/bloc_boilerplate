@@ -8,4 +8,7 @@ class ApiEndpoints {
   // Auth
   static const String login = '$_v1/auth/login';
   static const String profile = '$_v1/auth/profile';
+
+  // Products
+  static const String products = '$_v1/products';
 }

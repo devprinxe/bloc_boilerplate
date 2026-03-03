@@ -1,4 +1,4 @@
-import 'package:cartup/core/constants/api_endpoints.dart';
+import 'package:fintech/core/constants/api_endpoints.dart';
 
 class EnvConfig {
   static const String environment = String.fromEnvironment('ENV', defaultValue: 'dev');

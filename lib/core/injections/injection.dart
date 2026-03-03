@@ -1,10 +1,14 @@
-import 'package:cartup/core/config/env_config.dart';
-import 'package:cartup/core/injections/injection.config.dart';
 import 'package:dio/dio.dart';
+import 'package:fintech/core/config/env_config.dart';
+import 'package:fintech/core/injections/injection.config.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
+import 'package:isar/isar.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../features/cart/data/models/cart_item_model.dart';
 
 final getIt = GetIt.instance;
 
@@ -15,6 +19,14 @@ Future<void> configureDependencies() => getIt.init(environment: EnvConfig.enviro
 abstract class RegisterModule {
   @preResolve
   Future<SharedPreferences> get prefs => SharedPreferences.getInstance();
+
+  @preResolve
+  Future<Isar> get isar async {
+    final dir = await getApplicationDocumentsDirectory();
+    return await Isar.open([
+      CartItemModelSchema, // as your app grows
+    ], directory: dir.path);
+  }
 
   @Environment('prod')
   @lazySingleton

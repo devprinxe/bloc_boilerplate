@@ -1,5 +1,5 @@
-import 'package:cartup/features/splash/presentation/bloc/splash_event.dart';
-import 'package:cartup/features/splash/presentation/bloc/splash_state.dart';
+import 'package:fintech/features/splash/presentation/bloc/splash_event.dart';
+import 'package:fintech/features/splash/presentation/bloc/splash_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 
