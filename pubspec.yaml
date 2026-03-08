@@ -44,6 +44,7 @@ dependencies:
   shared_preferences:
   dartz:
   cached_network_image:
+  internet_connection_checker_plus: ^2.9.1+2
 
 dev_dependencies:
   flutter_test:

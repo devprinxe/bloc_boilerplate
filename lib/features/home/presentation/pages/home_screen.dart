@@ -1,10 +1,13 @@
 import 'package:fintech/core/router/app_routes.dart';
 import 'package:fintech/features/home/presentation/widgets/product_card.dart';
+import 'package:fintech/shared/netowork_checker/network_checker_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../shared/netowork_checker/network_checker_state.dart';
 import '../bloc/home_bloc.dart';
+import '../bloc/home_event.dart';
 import '../bloc/home_state.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -32,7 +35,21 @@ class HomeScreen extends StatelessWidget {
               },
             );
           } else if (state is HomeErrorState) {
-            return Center(child: Text(state.message));
+            return BlocListener<NetworkCheckerBloc, NetworkCheckerState>(
+              listenWhen: (previous, current) {
+                if (current is InternetDisconnected) return false;
+                if (previous is InternetDisconnected && current is InternetConnected) {
+                  return true;
+                }
+                return false;
+              },
+              listener: (context, state) {
+                if (state is InternetConnected) {
+                  context.read<HomeBloc>().add(LoadProducts());
+                }
+              },
+              child: Center(child: Text(state.message)),
+            );
           }
           return Container();
         },

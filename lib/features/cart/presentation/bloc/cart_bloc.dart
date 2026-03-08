@@ -1,3 +1,4 @@
+import 'package:fintech/features/cart/data/models/cart_item_model.dart';
 import 'package:fintech/features/cart/domain/usecases/get_cart_usecase.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
@@ -13,18 +14,20 @@ class CartBloc extends Bloc<CartEvent, CartState> {
 
   CartBloc(this._storage, this._getCartProductsUseCase) : super(CartInitialState()) {
     on<LoadCartProducts>(loadCartProducts);
+    on<AddToCart>(addToCart);
   }
 
   Future<void> loadCartProducts(LoadCartProducts event, Emitter<CartState> emit) async {
-    emit(CartLoadingState());
-    final result = await _getCartProductsUseCase();
-    result.fold(
-      (failure) {
-        emit(CartErrorState(failure.message));
-      },
-      (products) {
-        emit(CartLoadedState(products));
-      },
-    );
+    emit(CartLoadedState([]));
+  }
+
+  Future<void> addToCart(AddToCart event, Emitter<CartState> emit) async {
+    final cartItems = <CartItemModel>[];
+    if (state is CartLoadedState) {
+      final previousItems = (state as CartLoadedState).products;
+      cartItems.addAll(previousItems);
+    }
+    cartItems.add(CartItemModel.fromProductEntity(event.product, 2));
+    emit(CartLoadedState(cartItems));
   }
 }
