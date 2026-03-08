@@ -11,4 +11,5 @@ class ApiEndpoints {
 
   // Products
   static const String products = '$_v1/products';
+  static String productDetails({required String id}) => '$_v1/products/$id';
 }

@@ -1,8 +1,8 @@
-import 'package:fintech/features/cart/presentation/bloc/cart_bloc.dart';
-import 'package:fintech/features/cart/presentation/bloc/cart_event.dart';
+import 'package:fintech/core/router/app_routes.dart';
 import 'package:fintech/features/home/presentation/widgets/product_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 import '../bloc/home_bloc.dart';
 import '../bloc/home_state.dart';
@@ -25,7 +25,7 @@ class HomeScreen extends StatelessWidget {
               itemBuilder: (_, i) {
                 return InkWell(
                   onTap: () {
-                    context.read<CartBloc>().add(AddToCart(product: state.products[i]));
+                    context.push(AppRoutes.productDetailsRoute(state.products[i].id.toString()));
                   },
                   child: ProductCard(product: state.products[i]),
                 );

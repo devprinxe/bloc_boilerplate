@@ -14,7 +14,7 @@ Future<void> configureDependencies() => getIt.init(environment: EnvConfig.enviro
 @module
 abstract class RegisterModule {
   @preResolve
-  Future<SharedPreferences> get prefs => SharedPreferences.getInstance();
+  Future<SharedPreferences> get prefs async => await SharedPreferences.getInstance();
 
   @Environment('prod')
   @lazySingleton
@@ -23,6 +23,10 @@ abstract class RegisterModule {
   @Environment('dev')
   @lazySingleton
   Dio get mockDio => _setupDio(EnvConfig.baseUrl, includeLogs: true);
+
+  @Environment('stage')
+  @lazySingleton
+  Dio get testDio => _setupDio(EnvConfig.baseUrl, includeLogs: true);
 
   Dio _setupDio(String baseUrl, {required bool includeLogs}) {
     final dio = Dio(BaseOptions(baseUrl: baseUrl, connectTimeout: const Duration(seconds: 10)));

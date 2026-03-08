@@ -44,9 +44,6 @@ dependencies:
   shared_preferences:
   dartz:
   cached_network_image:
-  isar:
-  path_provider:
-  isar_flutter_libs:
 
 dev_dependencies:
   flutter_test:
@@ -59,7 +56,6 @@ dev_dependencies:
   # rules and activating additional ones.
   flutter_lints: ^5.0.0
   injectable_generator:
-  isar_generator:
   build_runner:
   change_app_package_name:
 

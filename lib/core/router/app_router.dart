@@ -1,4 +1,5 @@
 import 'package:fintech/core/router/app_routes.dart';
+import 'package:fintech/features/productDetails/presentation/pages/product_details_page_provider.dart';
 import 'package:fintech/features/splash/presentation/pages/splash_screen_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -18,6 +19,13 @@ class AppRouter {
         path: AppRoutes.splash,
         builder: (context, state) {
           return const SplashScreenProvider();
+        },
+      ),
+      GoRoute(
+        path: AppRoutes.productDetails,
+        builder: (context, state) {
+          final id = state.pathParameters['id'] ?? "";
+          return ProductDetailsPageProvider(productId: id);
         },
       ),
       StatefulShellRoute.indexedStack(

@@ -4,4 +4,6 @@ class AppRoutes {
   static const String register = '/register';
   static const String home = '/home';
   static const String cart = '/cart';
+  static const String productDetails = '/product-details/:id';
+  static String productDetailsRoute(String id) => '/product-details/$id';
 }
