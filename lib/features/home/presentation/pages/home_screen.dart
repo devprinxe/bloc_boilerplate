@@ -22,17 +22,22 @@ class HomeScreen extends StatelessWidget {
           if (state is HomeLoadingState) {
             return Center(child: CircularProgressIndicator());
           } else if (state is HomeLoadedState) {
-            return GridView.builder(
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, childAspectRatio: 0.9),
-              itemCount: state.products.length,
-              itemBuilder: (_, i) {
-                return InkWell(
-                  onTap: () {
-                    context.push(AppRoutes.productDetailsRoute(state.products[i].id.toString()));
-                  },
-                  child: ProductCard(product: state.products[i]),
-                );
+            return RefreshIndicator(
+              onRefresh: () async {
+                context.read<HomeBloc>().add(LoadProducts());
               },
+              child: GridView.builder(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, childAspectRatio: 0.9),
+                itemCount: state.products.length,
+                itemBuilder: (_, i) {
+                  return InkWell(
+                    onTap: () {
+                      context.push(AppRoutes.productDetailsRoute(state.products[i].id.toString()));
+                    },
+                    child: ProductCard(product: state.products[i]),
+                  );
+                },
+              ),
             );
           } else if (state is HomeErrorState) {
             return BlocListener<NetworkCheckerBloc, NetworkCheckerState>(
