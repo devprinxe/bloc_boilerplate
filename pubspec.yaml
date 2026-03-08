@@ -61,6 +61,7 @@ dev_dependencies:
   injectable_generator:
   isar_generator:
   build_runner:
+  change_app_package_name:
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

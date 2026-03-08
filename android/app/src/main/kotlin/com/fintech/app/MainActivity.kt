@@ -1,4 +1,4 @@
-package com.example.cartup
+package com.fintech.app
 
 import io.flutter.embedding.android.FlutterActivity
 
