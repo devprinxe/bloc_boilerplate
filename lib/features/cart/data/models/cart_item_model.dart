@@ -1,15 +1,6 @@
 import 'package:fintech/features/home/domain/entities/product_entities.dart';
-import 'package:isar/isar.dart';
 
-import '../../../../core/storage/isar_model.dart';
-
-part 'cart_item_model.g.dart';
-
-@collection
-class CartItemModel implements IsarModel {
-  @override
-  Id id = Isar.autoIncrement;
-  @Index(unique: true, replace: true)
+class CartItemModel {
   late String productId;
   late String title;
   late String description;
