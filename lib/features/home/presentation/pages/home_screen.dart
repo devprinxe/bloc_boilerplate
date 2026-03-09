@@ -1,6 +1,5 @@
 import 'package:fintech/core/router/app_routes.dart';
 import 'package:fintech/features/home/presentation/widgets/product_card.dart';
-import 'package:fintech/shared/ui/loading_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -16,49 +15,54 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<HomeBloc, HomeState>(
-      builder: (context, state) {
-        return BlocListener<NetworkCheckerBloc, NetworkCheckerState>(
-          listenWhen: (previous, current) {
-            if (previous is InternetDisconnected && current is InternetConnected) return true;
-            return false;
+    return MultiBlocListener(
+      listeners: [
+        // Handle auto-retry on reconnection
+        BlocListener<NetworkCheckerBloc, NetworkCheckerState>(
+          listenWhen: (prev, curr) => prev is InternetDisconnected && curr is InternetConnected,
+          listener: (context, _) {
+            final state = context.read<HomeBloc>().state;
+            if (state is HomeErrorState) {
+              context.read<HomeBloc>().add(LoadProducts());
+            }
           },
-          listener: (context, networkState) {
-            if (state is HomeErrorState) context.read<HomeBloc>().add(LoadProducts());
-          },
-          child: Scaffold(
-            appBar: AppBar(title: const Text('Products')),
-            body: RefreshIndicator(
-              onRefresh: () async {
-                context.read<HomeBloc>().add(LoadProducts());
-              },
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    if (state is HomeLoadingState) LoadingView(message: "Fetching Products..."),
-                    if (state is HomeLoadedState)
-                      GridView.builder(
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, childAspectRatio: 0.9),
-                        itemCount: state.products.length,
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemBuilder: (_, i) {
+        ),
+      ],
+      child: Scaffold(
+        appBar: AppBar(title: const Text('Products')),
+        body: RefreshIndicator(
+          onRefresh: () async => context.read<HomeBloc>().add(LoadProducts()),
+          child: BlocBuilder<HomeBloc, HomeState>(
+            builder: (context, state) {
+              return CustomScrollView(
+                physics: const AlwaysScrollableScrollPhysics(), // Important for RefreshIndicator
+                slivers: [
+                  if (state is HomeLoadingState) const SliverFillRemaining(child: Center(child: CircularProgressIndicator())),
+
+                  if (state is HomeErrorState) SliverFillRemaining(child: Center(child: Text(state.message))),
+
+                  if (state is HomeLoadedState)
+                    SliverPadding(
+                      padding: const EdgeInsets.all(10),
+                      sliver: SliverGrid(
+                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, mainAxisSpacing: 10, crossAxisSpacing: 10, childAspectRatio: 0.9),
+                        delegate: SliverChildBuilderDelegate((context, i) {
+                          final product = state.products[i];
                           return InkWell(
                             onTap: () {
-                              context.push(AppRoutes.productDetailsRoute(state.products[i].id.toString()));
+                              context.push(AppRoutes.productDetailsRoute(product.id.toString()));
                             },
-                            child: ProductCard(product: state.products[i]),
+                            child: ProductCard(product: product),
                           );
-                        },
+                        }, childCount: state.products.length),
                       ),
-                    if (state is HomeErrorState) Center(child: Text(state.message)),
-                  ],
-                ),
-              ),
-            ),
+                    ),
+                ],
+              );
+            },
           ),
-        );
-      },
+        ),
+      ),
     );
   }
 }
