@@ -1,11 +1,12 @@
 import 'package:fintech/core/router/app_routes.dart';
 import 'package:fintech/features/home/presentation/widgets/product_card.dart';
+import 'package:fintech/shared/ui/loading_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../shared/netowork_checker/network_checker_bloc.dart';
-import '../../../../shared/netowork_checker/network_checker_state.dart';
+import '../../../../shared/blocs/network_checker/network_checker_bloc.dart';
+import '../../../../shared/blocs/network_checker/network_checker_state.dart';
 import '../bloc/home_bloc.dart';
 import '../bloc/home_event.dart';
 import '../bloc/home_state.dart';
@@ -34,7 +35,7 @@ class HomeScreen extends StatelessWidget {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    if (state is HomeLoadingState) CircularProgressIndicator(),
+                    if (state is HomeLoadingState) LoadingView(message: "Fetching Products..."),
                     if (state is HomeLoadedState)
                       GridView.builder(
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, childAspectRatio: 0.9),

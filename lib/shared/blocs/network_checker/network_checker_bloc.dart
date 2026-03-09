@@ -1,12 +1,12 @@
 // The BLoC
 import 'dart:async';
 
-import 'package:fintech/shared/netowork_checker/network_checker_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 
 import 'network_checker_event.dart';
+import 'network_checker_state.dart';
 
 @injectable
 class NetworkCheckerBloc extends Bloc<NetworkCheckerEvent, NetworkCheckerState> {

@@ -1,6 +1,6 @@
 import 'package:fintech/features/cart/presentation/bloc/cart_event.dart';
-import 'package:fintech/shared/netowork_checker/network_checker_bloc.dart';
-import 'package:fintech/shared/netowork_checker/network_checker_state.dart';
+import 'package:fintech/shared/blocs/network_checker/network_checker_bloc.dart';
+import 'package:fintech/shared/blocs/network_checker/network_checker_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
